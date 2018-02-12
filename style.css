@@ -1,0 +1,12 @@
+.notification a:not(.button) {
+    color: green;
+    text-decoration: none;
+    color: black;
+}
+
+.container-flex {
+    display: flex;
+    padding-top: 5px;
+    justify-content: space-around;
+    
+  }
