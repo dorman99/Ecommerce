@@ -1,0 +1,13 @@
+var express = require('express');
+var router = express.Router();
+var itemController = require('../controllers//items')
+/* GET home page. */
+
+
+router.post('/',itemController.createItem)
+router.get('/',itemController.findAllItem)
+router.get('/:id',itemController.findOneItem)
+router.put('/:id',itemController.editItem)
+router.delete("/:id",itemController.deleteItem)
+
+module.exports = router;
