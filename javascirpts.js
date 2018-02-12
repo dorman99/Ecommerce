@@ -53,5 +53,45 @@ let count = 0
   }
 
   function addItemToChart(){
+   console.log('masuk sini')
+  }
+
+  function showMyChart(){
+    console.log('masuk sini char')
+  }
+
+  function signIn(){
+    $("#signinmodal").addClass('is-active')
+  }
+
+  function removeModal() {
+    $('.modal').removeClass('is-active')
+  } 
+  
+  function gologin(){
     console.log('masuk sini')
+    $("#mainmenu").toggle('slow',()=>{
+      console.log('masukl')
+    })
+    $("#signin").toggle('slow',()=>{
+      $("#logout").toggle('slow',()=>{
+        console.log('mausk')
+      })
+    })
+    $("#signinmodal").removeClass('is-active')
+  }
+
+  function checkout(){
+    console.log('masuk ke checkout')
+  }
+
+  function logout(){
+    $("#mainmenu").toggle('slow',()=>{
+      console.log('masukl')
+    })
+    $("#logout").toggle('slow',()=>{
+      $("#signin").toggle('slow',()=>{
+        console.log('mausk')
+      })
+    })
   }
