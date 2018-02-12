@@ -10,3 +10,7 @@
     justify-content: space-around;
     
   }
+  .listing {
+    display: flex;
+    flex-flow: row wrap;
+    }

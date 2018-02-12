@@ -23,3 +23,35 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     });
+let count = 0
+  function showCategories(){
+    
+    if(!count){
+      $(".categories").fadeIn('slow')
+      $("#showcategories a").html('Hide categories')
+      count = 1
+      console.log(count)
+    } else{
+      console.log(count)
+      $(".categories").fadeOut('slow')
+      $("#showcategories a").html('Show categories')
+      count = 0
+    }
+    
+  }
+
+  function showItems(){
+    var buttoncek =  $("#showItems").text()
+    $("#items").toggle('slow',()=>{
+      if(buttoncek == 'hide item' ){
+        $("#showItems ").text('Show Items')
+      }else if(buttoncek == 'Show Items'){
+        $("#showItems ").text('hide item')
+      }
+    })
+    
+  }
+
+  function addItemToChart(){
+    console.log('masuk sini')
+  }

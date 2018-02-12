@@ -6,14 +6,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
     <link rel="stylesheet" href="style.css">
-    <script src="bulmaBurger.js"></script>
+    <script
+        src="http://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    <script src="javascirpts.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ecommerce layout</title>
 </head>
 <body>
-    <section class="hero is-warning">
-    <div class="container is-fullhd">
-        
+    <section class="hero is-success">
+    
                 <section class="hero">
                         <div class="hero-body">
                           <div class="container">
@@ -32,72 +35,222 @@
                                 <span></span>
                               </button>
                         
-                        <div class="navbar-menu" id="navMenu">
+                        <div class="navbar-menu " id="navMenu">
                                 <div class="navbar-start">
                                         <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i> Home</a>
-                                        <a class="navbar-item "><i class="fas fa-address-card"></i> Profile</a> 
+                                        <a style="display:none" class="navbar-item "><i class="fas fa-address-card"></i> Profile</a> 
                                       </div>      
                                 <div class="navbar-end">
                                     <div class="control container-flex">
-                                        
-                                        <input class="input" type="text" placeholder="Search">
-                                        <button class="button is-primary" style="margin-left:5px">search item</button>
-                        
+        
                                     </div>
-                                        <a class="navbar-item " ><i class="fas fa-sign-out-alt"></i>Logout</a>
+                                        <a style="display:none" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>Logout</a>
                                 </div>
                         </div>
                 </nav>
-        
-        <div class="notification is-primary" >
-        <div class="tile is-ancestor">
-                <div class="tile is-vertical is-8">
-                  <div class="tile">
-                    <div class="tile is-parent is-vertical">
-                      <article class="tile is-child notification is-success">
-                        <p class="title">Vertical...</p>
-                        <p class="subtitle">Top tile</p>
-                      </article>
-                      <article class="tile is-child notification is-warning">
-                        <p class="title">...tiles</p>
-                        <p class="subtitle">Bottom tile</p>
-                      </article>
-                    </div>
-                    <div class="tile is-parent">
-                      <article class="tile is-child notification is-info">
-                        <p class="title">Middle tile</p>
-                        <p class="subtitle">With an image</p>
-                        <figure class="image is-4by3">
-                          <img src="https://bulma.io/images/placeholders/640x480.png">
-                        </figure>
-                      </article>
-                    </div>
-                  </div>
-                  <div class="tile is-parent">
-                    <article class="tile is-child notification is-danger">
-                      <p class="title">Wide tile</p>
-                      <p class="subtitle">Aligned with the right tile</p>
-                      <div class="content">
-                    
+            
+    
+    </section>
+    <section class="section">
+        <div class="columns">
+            <div class="column is-one-quarter">
+                <aside class="menu">
+                    <p class="menu-label">
+                      General
+                    </p>
+                    <ul class="menu-list">
+                      <div  >
+                          <li onclick="showCategories()" id="showcategories"><a>Show Categories</a></li>
+                          <div hidden class="categories">
+                            <li>
+                                <ul>
+                                    <li><a>elektronik</a></li>
+                                    <li><a>elektronik</a></li>
+                                    <li><a>elektronik</a></li>
+                                  </ul>
+                            </li> 
+                            
+                          </div>
                       </div>
-                    </article>
-                  </div>
-                </div>
-                <div class="tile is-parent">
-                  <article class="tile is-child notification is-warning">
-                    <div class="content">
-                      <p class="title">Tall tile</p>
-                      <p class="subtitle">With even more content</p>
-                      <div class="content">
-                        <!-- Content -->
+                      <div >
+                          <li><a id="showItems"  onclick="showItems()">Show Items</a></li>
                       </div>
-                    </div>
-                  </article>
-                </div>
-              </div>
+                     
+                    </ul>
+                    <p class="menu-label">
+                      Transactions
+                    </p>
+                    <ul class="menu-list" onclick="checkout()">
+                      <li><a >show my chart</a></li>
+                      <li><a>Checkout Items</a></li>
+                    </ul>
+                  </aside>
+                  
             </div>
-      </div>
-      <br>
+            <!-- ini listig item dari sini buat loop nanti -->
+            <div style="display:none" id="items" class="column"  > 
+               <div class="columns listing">
+                 <div class="column is-one-quarter">
+
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img width="500px" height="200px" src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+                 <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                          <figure class="image is-4by3">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">John Smith</p>
+                             
+                              <a class="button is-warning" >add item to chart</a>
+                            </div>
+                        </div>
+                      </div>
+                 </div>
+                 </div>
+                 
+               </div>
+
+          </div>
     </section>
       <footer class="footer">
             <div class="container">
