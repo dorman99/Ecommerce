@@ -15,7 +15,7 @@
     <title>Ecommerce layout</title>
 </head>
 <body>
-    <section class="hero is-success">
+    <section class="hero is-success" >
     
                 <section class="hero">
                         <div class="hero-body">
@@ -38,20 +38,24 @@
                         <div class="navbar-menu " id="navMenu">
                                 <div class="navbar-start">
                                         <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i> Home</a>
-                                        <a style="display:none" class="navbar-item "><i class="fas fa-address-card"></i> Profile</a> 
+                                        <a onclick="showMyChart()" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
+                                       
+                                        <a  style="display:none" class="navbar-item "><i class="fas fa-address-card"></i> Profile</a> 
                                       </div>      
                                 <div class="navbar-end">
                                     <div class="control container-flex">
         
-                                    </div>
-                                        <a style="display:none" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>Logout</a>
+                                    </div><a onclick="signIn()" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> sign in</a>
+                                    
+                                        <a  id="logout" onclick="logout()" style="display:none" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>Logout</a>
                                 </div>
                         </div>
                 </nav>
             
     
     </section>
-    <section class="section">
+
+    <section style="display:none" id="mainmenu" class="section">
         <div class="columns">
             <div class="column is-one-quarter">
                 <aside class="menu">
@@ -90,8 +94,8 @@
             <!-- ini listig item dari sini buat loop nanti -->
             <div style="display:none" id="items" class="column"  > 
                <div class="columns listing">
-                 <div class="column is-one-quarter">
 
+                 <div class="column is-one-quarter">
                     <div class="card">
                         <div class="card-image">
                           <figure class="image is-4by3">
@@ -115,7 +119,7 @@
                     <div class="card">
                         <div class="card-image">
                           <figure class="image is-4by3">
-                            <img width="500px" height="200px" src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
                           </figure>
                         </div>
                         <div class="card-content">
@@ -124,7 +128,7 @@
                             </div>
                             <div class="media-content">
                               <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" >add item to chart</a>
+                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
                             </div>
                         </div>
                       </div>
@@ -144,64 +148,7 @@
                             </div>
                             <div class="media-content">
                               <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" >add item to chart</a>
+                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
                             </div>
                         </div>
                       </div>
@@ -221,12 +168,13 @@
                             </div>
                             <div class="media-content">
                               <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" >add item to chart</a>
+                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
                             </div>
                         </div>
                       </div>
                  </div>
                  </div>
+
                  <div class="column is-one-quarter">
                     <div class="card">
                         <div class="card-image">
@@ -240,18 +188,56 @@
                             </div>
                             <div class="media-content">
                               <p class="title is-4">John Smith</p>
-                             
-                              <a class="button is-warning" >add item to chart</a>
+                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
                             </div>
                         </div>
                       </div>
                  </div>
                  </div>
-                 
+
+
                </div>
 
           </div>
     </section>
+
+    <div id='signinmodal' class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="field">
+                <p class="control has-icons-left has-icons-right">
+                  <input class="input" type="email" placeholder="Email">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                  <span class="icon is-small is-right">
+                    <i class="fas fa-check"></i>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control has-icons-left">
+                  <input class="input" type="password" placeholder="Password">
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-lock"></i>
+                  </span>
+                </p>
+              </div>
+              <div class="field">
+                <p class="control">
+                  <button onclick="gologin()" class="button is-success">
+                    Login
+                  </button>
+                   <p> dont have any acc? </p>
+                  <button onclick="gologin()" class="button is-success">
+                      sign in
+                    </button>
+                </p>
+              </div>
+              
+        </div>
+        <button class="modal-close is-large" onclick="removeModal()" aria-label="close"></button>
+      </div>
       <footer class="footer">
             <div class="container">
               <div class="content has-text-centered">
