@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="style.css">
     <script
         src="http://code.jquery.com/jquery-3.3.1.js"
@@ -15,8 +17,14 @@
     <title>Ecommerce layout</title>
 </head>
 <body>
+
+  <div id="app">
+
+    <h1>
+      {{makan}}
+    </h1>
     <section class="hero is-success" >
-    
+
                 <section class="hero">
                         <div class="hero-body">
                           <div class="container">
@@ -24,7 +32,7 @@
                                     <img src="./assets/my_logo.png"  width="200" height="100" alt="Bulma">
                             </h1>
                             <h1 class="subtitle has-text-centered is-uppercase has-text-weight-semibold">
-                               ayo jajan
+                              {{features.tagline}}
                             </h1>
                         </div>
                       </section>
@@ -34,28 +42,29 @@
                                 <span></span>
                                 <span></span>
                               </button>
-                        
+
                         <div class="navbar-menu " id="navMenu">
                                 <div class="navbar-start">
-                                        <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i> Home</a>
-                                        <a onclick="showMyChart()" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
-                                       
-                                        <a  style="display:none" class="navbar-item "><i class="fas fa-address-card"></i> Profile</a> 
-                                      </div>      
+                                        <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i>{{features.home}}</a>
+                                        <a v-if="showMenu" @click="showMychart()" id="mychart" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
+                                        <a  v-if="showMenu" class="navbar-item "><i class="fas fa-address-card"></i>{{features.profile}}</a>
+                                      </div>
                                 <div class="navbar-end">
                                     <div class="control container-flex">
-        
-                                    </div><a onclick="signIn()" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> sign in</a>
-                                    
-                                        <a  id="logout" onclick="logout()" style="display:none" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>Logout</a>
-                                </div>
+                                     
+                                    </div><a v-if="signIn" @click="modalPopUp" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> {{features.signIn}}</a>
+                                
+                                        <a  id="logout" @click="login" v-if="showMenu" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>{{features.logout}}</a>
+                                      </div>
                         </div>
                 </nav>
-            
-    
     </section>
-
-    <section style="display:none" id="mainmenu" class="section">
+    <transition
+    name="custom-classes-transition"
+    enter-active-class="animated tada"
+    leave-active-class="animated bounceOutRight"
+  >
+    <section v-if="showMenu" id="mainmenu" class="section">
         <div class="columns">
             <div class="column is-one-quarter">
                 <aside class="menu">
@@ -64,144 +73,62 @@
                     </p>
                     <ul class="menu-list">
                       <div  >
-                          <li onclick="showCategories()" id="showcategories"><a>Show Categories</a></li>
+                          <li onclick="showCategories()" id="showcategories"><a>{{features.showcategories}}</a></li>
                           <div hidden class="categories">
                             <li>
                                 <ul>
-                                    <li><a>elektronik</a></li>
-                                    <li><a>elektronik</a></li>
-                                    <li><a>elektronik</a></li>
+                                    <li v-for="cate in categories"><a>{{cate}}</a></li>
                                   </ul>
-                            </li> 
-                            
+                            </li>
+
                           </div>
                       </div>
                       <div >
-                          <li><a id="showItems"  onclick="showItems()">Show Items</a></li>
+                          <li><a id="showItems"  @click="showItems()">{{features.showitems}}</a></li>
                       </div>
-                     
+
                     </ul>
                     <p class="menu-label">
                       Transactions
                     </p>
                     <ul class="menu-list" onclick="checkout()">
-                      <li><a >show my chart</a></li>
-                      <li><a>Checkout Items</a></li>
+                      <li v-for="trans in transactions"><a >{{trans}}</a></li>
+
                     </ul>
                   </aside>
-                  
+
             </div>
             <!-- ini listig item dari sini buat loop nanti -->
-            <div style="display:none" id="items" class="column"  > 
-               <div class="columns listing">
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
+            <transition name="bounce">
+            <ul  id="items" v-if="items" class="column listing">
+              <li class="child-listing" v-for="(item,idx) in dataitems"> 
+                  <div class="card">
+                      <div class="card-image">
+                        <figure class="image is-4by3">
+                          <img :src="item.image" alt="Placeholder image">
+                        </figure>
                       </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
+                      <div class="card-content">
+                        <div class="media">
+                          <div class="media-left">
+                          </div>
+                          <div class="media-content">
+                            <p class="title is-4">item name: {{item.name}}</p>
+                            <p class="title is-4">item price :{{item.price}}</p>
+                            <p class="title is-4">item quantity: {{item.quantity}}</p>
+                            <a class="button is-warning" @click=" addItemToChart(item,idx)" >add item to chart</a>
+                          </div>
                       </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-
-
+                    </div>
                </div>
+              </li>
 
-          </div>
+            </ul>
+          </transition>
+
     </section>
-
-    <div id='signinmodal' class="modal">
+  </transition>
+    <div id='signinmodal' :class="modal">
         <div class="modal-background"></div>
         <div class="modal-content">
             <div class="field">
@@ -225,19 +152,58 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button onclick="gologin()" class="button is-success">
+                  <button @click="login" class="button is-success">
                     Login
                   </button>
                    <p> dont have any acc? </p>
-                  <button onclick="gologin()" class="button is-success">
+                  <button @click="login" class="button is-success">
                       sign in
                     </button>
                 </p>
               </div>
-              
         </div>
-        <button class="modal-close is-large" onclick="removeModal()" aria-label="close"></button>
+        <button class="modal-close is-large" @click="closeModalSignIn" aria-label="close"></button>
       </div>
+
+      <div id="chartmodal" :class="modalChart ">
+          <div class="modal-background"></div>
+          <div class="modal-content">
+              <ul class="listing">
+                <!-- ini listig item dari sini buat loop nanti -->
+                  <li class="child-listing" v-for="item in chartData">  
+                      <div class="card ">
+                          <div class="card-image">
+                            <figure class="image is-4by3">
+                              <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                            </figure>
+                          </div>
+                          <div class="card-content">
+                            <div class="media">
+                              <div class="media-left">
+                              </div>
+                              <div class="media-content">
+                                <p>nama item:{{item.name}}</p>
+                                <p>harga item:{{item.name}} </p>
+                                  <div class="field">
+                                      <p class="control">
+                                        <button  class="button is-danger">
+                                          cancel buy
+                                        </button>
+                                
+                                      </p>
+                                    </div>
+                              </div>
+                          </div>
+                        </div>
+                   </div>
+                  </li>
+
+              </ul>
+          </div>
+          <button class="modal-close is-large" @click="closeModalChart" aria-label="close"></button>
+        </div>
+
+
       <footer class="footer">
             <div class="container">
               <div class="content has-text-centered">
@@ -249,4 +215,8 @@
               </div>
             </div>
           </footer>
+
+        </div>
+
+        <script src="app-vue.js"></script>
 </html>
