@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/e-commerce');
 var items = require('./routes/items');
 var users = require('./routes/users');
-
+var signin = require('./routes/signin')
 var app = express();
 
 
@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/signin',signin)
 app.use('/items', items);
 app.use('/users', users);
 

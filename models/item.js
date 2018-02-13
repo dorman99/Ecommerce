@@ -6,6 +6,7 @@ var itemsSchema = new Schema({
     name: {type:String,required:true,unique:true},
     harga: Number,
     stocks: {type:Number,default:0},
+    category: String
 });
 
 itemsSchema.plugin(uniqueValidator);

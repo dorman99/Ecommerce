@@ -1,19 +1,26 @@
-const Users = require('../models/Users')
+const Users = require('../models/users')
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const createUsers = (req,res)=>{
+
     let user = new Users({
         name:req.body.name,
         email:req.body.email,
         password:req.body.password
     })
-    user.save()
-     .then(result=>{
-         res.status(200).send({message:'Users created: ',data:result})
-     })
-     .catch(err=>{
-         res.send(err) //lempar validasi email unique disini
-     })
+    bcrypt.hash(user.password, saltRounds, function (err, hash) {
+        user.password = hash
+        user.save()
+            .then(result => {
+                res.status(200).send({ message: 'Users created: ', data: result })
+            })
+            .catch(err => {
+                res.send(err) //lempar validasi email unique disini
+            })
+    });
 }
+
 
 const edituser = (req,res)=>{
     let objEdit = {

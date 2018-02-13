@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var itemController = require('../controllers//items')
+var auth = require('../middlewares/auth')
 /* GET home page. */
-
+//auth udah siap
 
 router.post('/',itemController.createItem)
 router.get('/',itemController.findAllItem)
