@@ -13,4 +13,10 @@
   .listing {
     display: flex;
     flex-flow: row wrap;
-    }
+    width: 100%;
+}
+
+.child-listing{
+    padding: 30px;
+    margin: 10px
+}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="style.css">
     <script
         src="http://code.jquery.com/jquery-3.3.1.js"
@@ -15,8 +16,14 @@
     <title>Ecommerce layout</title>
 </head>
 <body>
-    <section class="hero is-success" >
+
+  <div id="app">
     
+    <h1>
+      {{makan}}
+    </h1>
+    <section class="hero is-success" >
+
                 <section class="hero">
                         <div class="hero-body">
                           <div class="container">
@@ -24,7 +31,7 @@
                                     <img src="./assets/my_logo.png"  width="200" height="100" alt="Bulma">
                             </h1>
                             <h1 class="subtitle has-text-centered is-uppercase has-text-weight-semibold">
-                               ayo jajan
+                              {{features.tagline}}
                             </h1>
                         </div>
                       </section>
@@ -34,25 +41,23 @@
                                 <span></span>
                                 <span></span>
                               </button>
-                        
+
                         <div class="navbar-menu " id="navMenu">
                                 <div class="navbar-start">
-                                        <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i> Home</a>
-                                        <a onclick="showMyChart()" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
-                                       
-                                        <a  style="display:none" class="navbar-item "><i class="fas fa-address-card"></i> Profile</a> 
-                                      </div>      
+                                        <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i>{{features.home}}</a>
+                                        <a style="display:none" onclick="showMyChart()" id="mychart" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
+
+                                        <a  style="display:none" class="navbar-item "><i class="fas fa-address-card"></i>{{features.profile}}</a>
+                                      </div>
                                 <div class="navbar-end">
                                     <div class="control container-flex">
-        
-                                    </div><a onclick="signIn()" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> sign in</a>
-                                    
-                                        <a  id="logout" onclick="logout()" style="display:none" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>Logout</a>
+
+                                    </div><a @click="modalSignIn()" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> {{features.signIn}}</a>
+
+                                        <a  id="logout" @click="logout()" style="display:none" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>{{features.logout}}</a>
                                 </div>
                         </div>
                 </nav>
-            
-    
     </section>
 
     <section style="display:none" id="mainmenu" class="section">
@@ -64,141 +69,55 @@
                     </p>
                     <ul class="menu-list">
                       <div  >
-                          <li onclick="showCategories()" id="showcategories"><a>Show Categories</a></li>
+                          <li onclick="showCategories()" id="showcategories"><a>{{features.showcategories}}</a></li>
                           <div hidden class="categories">
                             <li>
                                 <ul>
-                                    <li><a>elektronik</a></li>
-                                    <li><a>elektronik</a></li>
-                                    <li><a>elektronik</a></li>
+                                    <li v-for="cate in categories"><a>{{cate}}</a></li>
                                   </ul>
-                            </li> 
-                            
+                            </li>
+
                           </div>
                       </div>
                       <div >
-                          <li><a id="showItems"  onclick="showItems()">Show Items</a></li>
+                          <li><a id="showItems"  onclick="showItems()">{{features.showitems}}</a></li>
                       </div>
-                     
+
                     </ul>
                     <p class="menu-label">
                       Transactions
                     </p>
                     <ul class="menu-list" onclick="checkout()">
-                      <li><a >show my chart</a></li>
-                      <li><a>Checkout Items</a></li>
+                      <li v-for="trans in transactions"><a >{{trans}}</a></li>
+
                     </ul>
                   </aside>
-                  
+
             </div>
             <!-- ini listig item dari sini buat loop nanti -->
-            <div style="display:none" id="items" class="column"  > 
-               <div class="columns listing">
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
+            <ul  id="items" style="display:none" class="column listing">
+              <li class="child-listing"> 
+                  <div class="card ">
+                      <div class="card-image">
+                        <figure class="image is-4by3">
+                          <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                        </figure>
                       </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
+                      <div class="card-content">
+                        <div class="media">
+                          <div class="media-left">
+                          </div>
+                          <div class="media-content">
+                            <p class="title is-4">John Smith</p>
+                            <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
+                          </div>
                       </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-
-                 <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                          <figure class="image is-4by3">
-                            <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
-                          </figure>
-                        </div>
-                        <div class="card-content">
-                          <div class="media">
-                            <div class="media-left">
-                            </div>
-                            <div class="media-content">
-                              <p class="title is-4">John Smith</p>
-                              <a class="button is-warning" onclick=" addItemToChart()" >add item to chart</a>
-                            </div>
-                        </div>
-                      </div>
-                 </div>
-                 </div>
-
-
+                    </div>
                </div>
+              </li>
 
-          </div>
+            </ul>
+
     </section>
 
     <div id='signinmodal' class="modal">
@@ -225,19 +144,58 @@
               </div>
               <div class="field">
                 <p class="control">
-                  <button onclick="gologin()" class="button is-success">
+                  <button @click="login" class="button is-success">
                     Login
                   </button>
                    <p> dont have any acc? </p>
-                  <button onclick="gologin()" class="button is-success">
+                  <button @click="login" class="button is-success">
                       sign in
                     </button>
                 </p>
               </div>
-              
         </div>
         <button class="modal-close is-large" onclick="removeModal()" aria-label="close"></button>
       </div>
+
+      <div id="chartmodal" class="modal ">
+          <div class="modal-background"></div>
+          <div class="modal-content">
+              <ul class="listing">
+                <!-- ini listig item dari sini buat loop nanti -->
+                  <li class="child-listing">  
+                      <div class="card ">
+                          <div class="card-image">
+                            <figure class="image is-4by3">
+                              <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                            </figure>
+                          </div>
+                          <div class="card-content">
+                            <div class="media">
+                              <div class="media-left">
+                              </div>
+                              <div class="media-content">
+                                <p>nama item</p>
+                                <p>harga item: </p>
+                                  <div class="field">
+                                      <p class="control">
+                                        <button  class="button is-danger">
+                                          cancel buy
+                                        </button>
+                                
+                                      </p>
+                                    </div>
+                              </div>
+                          </div>
+                        </div>
+                   </div>
+                  </li>
+
+              </ul>
+          </div>
+          <button class="modal-close is-large" onclick="removeModal()" aria-label="close"></button>
+        </div>
+
+
       <footer class="footer">
             <div class="container">
               <div class="content has-text-centered">
@@ -249,4 +207,8 @@
               </div>
             </div>
           </footer>
+
+        </div>
+
+        <script src="app-vue.js"></script>
 </html>
