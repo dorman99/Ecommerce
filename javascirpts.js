@@ -23,3 +23,19 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     });
+let count = 0
+  function showCategories(){
+    
+    if(!count){
+      $(".categories").fadeIn('slow')
+      $("#showcategories a").html('Hide categories')
+      count = 1
+      console.log(count)
+    } else{
+      console.log(count)
+      $(".categories").fadeOut('slow')
+      $("#showcategories a").html('Show categories')
+      count = 0
+    }
+    
+  }
