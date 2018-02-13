@@ -1,28 +1,28 @@
-const Customers = require('../models/customers')
+const Users = require('../models/Users')
 
-const createCustomers = (req,res)=>{
-    let customer = new Customers({
+const createUsers = (req,res)=>{
+    let user = new Users({
         name:req.body.name,
         email:req.body.email,
         password:req.body.password
     })
-    customer.save()
+    user.save()
      .then(result=>{
-         res.status(200).send({message:'customers created: ',data:result})
+         res.status(200).send({message:'Users created: ',data:result})
      })
      .catch(err=>{
          res.send(err) //lempar validasi email unique disini
      })
 }
 
-const editCustomer = (req,res)=>{
+const edituser = (req,res)=>{
     let objEdit = {
         email : req.body.email,
         name  : req.body.name,
         password: req.body.password
     }
 
-    Customers.update({"_id":req.params.id},{$set:req.body})
+    Users.update({"_id":req.params.id},{$set:req.body})
      .then(doc=>{
          res.status(200).send({message:'data udpdated: ',data:doc})
      })
@@ -31,24 +31,24 @@ const editCustomer = (req,res)=>{
 
 const findAllCutsomers = (req,res)=>{
     
-    Customers.find()
+    Users.find()
      .then(docs=>{
-         res.status(200).send({message:'customers data ',data:docs})
+         res.status(200).send({message:'Users data ',data:docs})
      })
      .catch(err=>{
          res.send(err)})
 }
 
-const findOneCustomers = (req,res)=>{
-    Customers.findOne({'_id':req.params.id})
+const findOneUsers = (req,res)=>{
+    Users.findOne({'_id':req.params.id})
      .then(doc=>{
-         res.status(200).send({message:'single customer data :',data:doc})
+         res.status(200).send({message:'single user data :',data:doc})
      })
      .catch(err=>{res.send(err)})
 }
 
-const deleteOneCustomers = (req,res)=>{
-     Customers.remove({"_id":req.params.id})
+const deleteOneUsers = (req,res)=>{
+     Users.remove({"_id":req.params.id})
       .then((result)=>{
           res.status(200).send({message:'deleted: ',data:result})
       })
@@ -56,9 +56,9 @@ const deleteOneCustomers = (req,res)=>{
 }
 
 module.exports = {
-    createCustomers,
-    editCustomer,
+    createUsers,
+    edituser,
     findAllCutsomers,
-    findOneCustomers,
-    deleteOneCustomers
+    findOneUsers,
+    deleteOneUsers
 }
