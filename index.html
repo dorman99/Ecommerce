@@ -174,7 +174,7 @@
                       <div class="card ">
                           <div class="card-image">
                             <figure class="image is-4by3">
-                              <img src="http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340" alt="Placeholder image">
+                              <img :src="item.image" alt="Placeholder image">
                             </figure>
                           </div>
                           <div class="card-content">
@@ -183,7 +183,8 @@
                               </div>
                               <div class="media-content">
                                 <p>nama item:{{item.name}}</p>
-                                <p>harga item:{{item.name}} </p>
+                                <p>harga item:{{item.price}} </p>
+                                <p>harga item:{{item.quantity}} </p>
                                   <div class="field">
                                       <p class="control">
                                         <button  class="button is-danger">
@@ -197,8 +198,19 @@
                         </div>
                    </div>
                   </li>
-
               </ul>
+              <div class="card">
+                  
+                  <div class="card-content">
+                    <div class="content">
+                      total price : {{total}}
+                    </div>
+                  </div>
+                  <footer class="card-footer">
+                    <a href="#" class="card-footer-item " >Checkout</a>
+                  </footer>
+                </div>
+             
           </div>
           <button class="modal-close is-large" @click="closeModalChart" aria-label="close"></button>
         </div>

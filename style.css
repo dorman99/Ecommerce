@@ -21,6 +21,11 @@
     margin: 10px
 }
 
+.container.center{
+    display: flex;
+    justify-content: space-around;
+}
+
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active {
