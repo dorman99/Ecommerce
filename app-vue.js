@@ -73,9 +73,7 @@ new Vue({
             this.modal+=' is-active'
         },
         showMychart(){
-            this.chartData.map(el=>{
-                this.total+= el.price*el.quantity
-            })
+           
             this.modalChart+=' is-active'
         },
         showItems(){
@@ -113,6 +111,15 @@ new Vue({
            
         }
 
+    },
+    computed:{
+        totalPrice:function(){
+         this.chartData.map(el=>{
+                this.total+= el.price*el.quantity
+            })
+            console.log('ini totalpirce',this.total)
+            return this.total
+        }
     }
   }
 )
