@@ -39,36 +39,3 @@ let count = 0
     }
     
   }
-
-  function showItems(){
-    var buttoncek =  $("#showItems").text()
-    $("#items").toggle('slow',()=>{
-      if(buttoncek == 'hide item' ){
-        $("#showItems ").text('Show Items')
-      }else if(buttoncek == 'Show Items'){
-        $("#showItems ").text('hide item')
-      }
-    })
-    
-  }
-
-  function addItemToChart(){
-   console.log('masuk sini')
-  }
-
-  function showMyChart(){
-    console.log('masuk sini char')
-    $("#chartmodal").addClass('is-active')
-  }
-
-  // function signIn(){
-  //   $("#signinmodal").addClass('is-active')
-  // }
-
-  function removeModal() {
-    $('.modal').removeClass('is-active')
-  } 
-
-  function checkout(){
-    console.log('masuk ke checkout')
-  }

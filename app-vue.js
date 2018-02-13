@@ -1,6 +1,14 @@
 new Vue({
     el: "#app",
     data: {
+        
+        showMenu: false,
+        items:false,
+        signIn:true,
+        modal:'modal',
+        itemquan:0,
+        modalChart:'modal',
+        chartData : [],
         features:{
             tagline:'ayo jajan',
             home    : 'home',
@@ -10,7 +18,32 @@ new Vue({
             showcategories :'Show Categories',
             showitems:'Show Items'
         },
-        items :[],
+        dataitems:[{
+            id:1,
+            name:'jersey nfl',
+            image: "http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340",
+            price: 20000,
+            quantity:100
+        },
+        {   id:2,
+            name:'jersey nfl',
+            image: "http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340",
+            price: 20000,
+            quantity:100
+        },
+        {   id:3,
+            name:'jersey nfl',
+            image: "http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340",
+            price: 20000,
+            quantity:100
+        },
+        {   id:4,
+            name:'jersey nfl',
+            image: "http://nflshop.frgimages.com/FFImage/thumb.aspx?i=/productImages/_2079000/ff_2079386_xl.jpg&w=340",
+            price: 20000,
+            quantity:100
+        }
+    ],
         categories:[
             'sport',
             'education',
@@ -23,36 +56,46 @@ new Vue({
         makan:'bahlul ente',
     },
     methods:{
-        login:()=>{
-            //axios get item , user jga
-            console.log('masuk sini login')
-            $("#mainmenu").toggle('slow',()=>{
-            $("#mychart").toggle('slow',()=>{
-          console.log('masukl')
-        })
-    })
-            $("#signin").toggle('slow',()=>{
-            $("#logout").toggle('slow',()=>{
-            console.log('mausk')
-      })
-    })
-            $("#signinmodal").removeClass('is-active')
+        login () {
+            console.log(this.signIn)
+            this.showMenu = !this.showMenu
+            this.modal = 'modal'
+            this.signIn = !this.signIn;
         },
-        logout:()=>{
-            $("#mainmenu").toggle('slow',()=>{
-      
-            })
-            $("#logout").toggle('slow',()=>{
-              $("#signin").toggle('slow',()=>{
-                $("#mychart").toggle('slow',()=>{
-                  console.log('masukl')
-                })
-              })
-            })
+        closeModalChart(){
+            this.modalChart = 'modal'
         },
-        modalSignIn:()=>{
-            $("#signinmodal").addClass('is-active')
+        closeModalSignIn(){
+            this.modal = 'modal'
+        },
+        modalPopUp () {
+            this.modal+=' is-active'
+        },
+        showMychart(){
+            this.modalChart+=' is-active'
+        },
+        showItems(){
+           this.items = !this.items
+        },
+        addItemToChart(item,idx){
+            this.dataitems[idx].quantity-=1
+            this.chartData.push(item)
         }
+
+
     }
   }
 )
+
+
+// function showItems(){
+//     var buttoncek =  $("#showItems").text()
+//     $("#items").toggle('slow',()=>{
+//       if(buttoncek == 'hide item' ){
+//         $("#showItems ").text('Show Items')
+//       }else if(buttoncek == 'Show Items'){
+//         $("#showItems ").text('hide item')
+//       }
+//     })
+    
+//   }
