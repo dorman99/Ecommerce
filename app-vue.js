@@ -109,6 +109,14 @@ new Vue({
                     }
             }
            
+        },
+        removeItem(item,idx){
+            console.log(item.quantity)
+            console.log(item.price)
+           this.dataitems.map(el=>{
+               el.quantity+=item.quantity
+           })
+            this.chartData.splice(idx, 1)
         }
 
     },
