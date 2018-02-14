@@ -22,7 +22,7 @@ const signIn = (req,res)=>{
                 
             });
         }else{
-            res.send('data tidak ada login method disini')
+            res.send(null)
         }
     })
     .catch(err=>{res.status(500).send(err)})
