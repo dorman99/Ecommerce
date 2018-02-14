@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="style.css">
@@ -116,7 +117,7 @@
                             <p class="title is-4">item name: {{item.name}}</p>
                             <p class="title is-4">item price :{{item.price}}</p>
                             <p class="title is-4">item quantity: {{item.quantity}}</p>
-                            <a class="button is-warning" @click=" addItemToChart(item,idx)" >add item to chart</a>
+                            <a class="button is-warning" @click=" addItemToChart(item)" >add item to chart</a>
                           </div>
                       </div>
                     </div>
@@ -133,7 +134,7 @@
         <div class="modal-content">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
-                  <input class="input" type="email" placeholder="Email">
+                  <input class="input" v-model="email" type="email" placeholder="Email">
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -144,7 +145,7 @@
               </div>
               <div class="field">
                 <p class="control has-icons-left">
-                  <input class="input" type="password" placeholder="Password">
+                  <input class="input"  v-model="password" type="password" placeholder="Password">
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>

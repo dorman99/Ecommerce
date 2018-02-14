@@ -3,10 +3,11 @@ new Vue({
     data: {
         
         showMenu: false,
+        password:'',
+        email:'',
         items:false,
         signIn:true,
         modal:'modal',
-        total:0,
         itemquan:0,
         modalChart:'modal',
         chartData : [],
@@ -58,10 +59,33 @@ new Vue({
     },
     methods:{
         login () {
-            console.log(this.signIn)
-            this.showMenu = !this.showMenu
-            this.modal = 'modal'
-            this.signIn = !this.signIn;
+            console.log(this,'ini this atas')
+            let self = this
+
+            axios.post('http://localhost:3000/signin',{
+                email:this.email,
+                password:this.password
+            })
+            .then(function(response){
+                console.log(response,'ini ap')
+                if(response.data !== '' ){
+                    self.modal = "modal"
+                    self.showMenu = !self.showMenu
+                    self.signIn = !self.signIn;
+                }else{
+                    self.email='',
+                    self.password=''
+                    window.alert('password/email salah')
+                }
+               
+    
+           
+            })
+            .catch(function(error){
+            
+                console.error(error)
+            })
+            
         },
         closeModalChart(){
             this.modalChart = 'modal'
@@ -91,20 +115,16 @@ new Vue({
                     if(count == 0){
                         console.log(item)
                         let objAddTochart ={
-                            id: item.id,
-                            image:item.image,
-                            name:item.name,
-                            price:item.price,
-                            quantity:1
+                            ...item,
+                            quantity:1,
+                            subtotal:item.price
                         }
-                        console.log(this.dataitems[idx].quantity,'data before')
-                    
-                        console.log(this.dataitems[idx].quantity,'===')
                         this.dataitems[idx].quantity-=1
                         // console.log(item,'ini item')
                         this.chartData.push(objAddTochart)
                     }else{
                         this.chartData[idx].quantity++
+                        this.chartData[idx].subtotal+=item.price
                         this.dataitems[idx].quantity--
                     }
             }
@@ -113,34 +133,33 @@ new Vue({
         removeItem(item,idx){
             console.log(item.quantity)
             console.log(item.price)
-           this.dataitems.map(el=>{
-               el.quantity+=item.quantity
-           })
+           this.dataitems.reduce((accu,el)=>{
+               if(el.id == item.id){
+                el.quantity+=item.quantity
+               }
+              
+           },0)
             this.chartData.splice(idx, 1)
         }
 
     },
     computed:{
         totalPrice:function(){
-         this.chartData.map(el=>{
-                this.total+= el.price*el.quantity
-            })
-            console.log('ini totalpirce',this.total)
-            return this.total
+            const totalHarga = this.chartData.reduce((accu, currentVal)=>{
+                console.log('accu ', accu)
+                console.log('value ', currentVal.price)
+                return accu + currentVal.subtotal
+            }, 0)
+            return totalHarga
         }
     }
   }
 )
 
-
-// function showItems(){
-//     var buttoncek =  $("#showItems").text()
-//     $("#items").toggle('slow',()=>{
-//       if(buttoncek == 'hide item' ){
-//         $("#showItems ").text('Show Items')
-//       }else if(buttoncek == 'Show Items'){
-//         $("#showItems ").text('hide item')
-//       }
-//     })
-    
-//   }
+/**
+ * reduce ketika barang tidak jadi di tampung di hapus
+ * main tain yang lain juga 
+ * 
+ * jumat pagi di lanjutkan
+ * \
+ */
