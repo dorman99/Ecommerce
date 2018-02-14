@@ -7,8 +7,8 @@ var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/e-commerce');
 var items = require('./routes/items');
-var customers = require('./routes/customers');
-
+var users = require('./routes/users');
+var signin = require('./routes/signin')
 var app = express();
 
 
@@ -19,9 +19,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use('/signin',signin)
 app.use('/items', items);
-app.use('/customers', customers);
+app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
