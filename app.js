@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/e-commerce');
+mongoose.connect('mongodb://dorman99:ecom1@ds227168.mlab.com:27168/ecomdb');
 var items = require('./routes/items');
 var users = require('./routes/users');
 var signin = require('./routes/signin')
