@@ -171,7 +171,7 @@
           <div class="modal-content">
               <ul class="listing">
                 <!-- ini listig item dari sini buat loop nanti -->
-                  <li class="child-listing" v-for="(item,idx) in chartData">  
+                  <li class="child-listing" v-for="item in chartData">  
                       <div class="card ">
                           <div class="card-image">
                             <figure class="image is-4by3">
@@ -188,7 +188,7 @@
                                 <p>harga item:{{item.quantity}} </p>
                                   <div class="field">
                                       <p class="control">
-                                        <button @click='removeItem(item,idx)' class="button is-danger">
+                                        <button @click='removeItem(item)' class="button is-danger">
                                           cancel buy
                                         </button>
                                 
