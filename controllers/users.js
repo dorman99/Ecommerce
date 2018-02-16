@@ -20,7 +20,7 @@ const createUsers = (req,res)=>{
             })
     });
 }
-
+    
 
 const edituser = (req,res)=>{
     let objEdit = {

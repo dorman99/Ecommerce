@@ -3,6 +3,7 @@ const Item = require('../models/item')
 const createItem = (req,res)=>{
     let item =  new Item({
         name : req.body.name,
+        harga: req.body.price,
         stocks: req.body.stock
     })
 
