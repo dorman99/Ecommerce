@@ -3,8 +3,9 @@ const Item = require('../models/item')
 const createItem = (req,res)=>{
     let item =  new Item({
         name : req.body.name,
-        harga: req.body.price,
-        stocks: req.body.stock
+        price: req.body.price,
+        quantity: req.body.quantity,
+        category:req.body.category
     })
 
     item.save()
@@ -38,7 +39,8 @@ const editItem = (req,res)=>{
 }
 
 const deleteItem = (req,res)=>{
-    Item.remove({"_id":req.param.ud})
+    
+    Item.remove({"_id":req.params.id})
      .then(result=>{res.status(200).send({message:'item has been deleted'})})
      .catch(err=>{res.send(err)})
 }
