@@ -5,12 +5,15 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
 mongoose.connect('mongodb://dorman99:ecom1@ds227168.mlab.com:27168/ecomdb');
+
 var items = require('./routes/items');
 var users = require('./routes/users');
 var signin = require('./routes/signin')
 var app = express();
 var cors = require('cors')
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
