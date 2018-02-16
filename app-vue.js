@@ -67,6 +67,7 @@ new Vue({
                 password:this.password
             })
             .then(function(response){
+                if (response.data.length !== 0) {
                 let x = null
                 self.tempItems = response.data.dataItems
                 self.datausers = response.data.dataUsers
@@ -81,9 +82,9 @@ new Vue({
                     }
                 })
                 console.log(response,'ini response')
-                if (response.data.length !== 0) {
+              
                  if(response.data.data.role == 'customer'){
-                    
+                     swal("LogIn Success!", "welcome to AYO JAJAN", "success")
                         self.modal = "modal"
                         self.showMenu = !self.showMenu
                         self.signIn = !self.signIn;
@@ -92,7 +93,8 @@ new Vue({
                         
                     }
                  else if(response.data.data.role == 'admin'){
-                    
+                     self.dataitems = response.data.dataItems
+                     swal("LogIn Success", "welcome to AYO JAJAN", "success");
                         self.modal = "modal"
                         self.showMenuAdmin = !self.showMenuAdmin
                         self.logoutbtn = !self.logoutbtn
@@ -103,14 +105,13 @@ new Vue({
                 else if (response.data.length == 0) {
                     self.email = '',
                     self.password = ''
-                    window.alert('password/email salah')
+                    swal("Log in Failed!", "username/passwor was wrong!", "error");
                 }
                
     
            
             })
             .catch(function(error){
-            
                 console.error(error)
             })
             
@@ -209,7 +210,7 @@ new Vue({
             }).then(function(response){
                 console.log(response)
                 self.dataitems.push(response.data.data)
-                window.alert('item has been added to DB')
+                swal("Good job!", "DB was Updated!", "success");
                 self.newItem = {}
             })
             .catch(function(err){
@@ -218,19 +219,34 @@ new Vue({
         }, 
         removeItemAdmin(){
             let self =  this
-            axios.delete(`http://localhost:3000/items/${self.selected.itemRemove}`)
-             .then(response=>{
-                 
-                self.dataitems.forEach((el,idx)=>{
-                    if(el._id == self.selected.itemRemove){
-                        self.dataitems.splice(idx,1)
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        })
+                        axios.delete(`http://localhost:3000/items/${self.selected.itemRemove}`)
+                            .then(response => {
+
+                                self.dataitems.forEach((el, idx) => {
+                                    if (el._id == self.selected.itemRemove) {
+                                        self.dataitems.splice(idx, 1)
+                                    }
+                                })
+                                self.selected.itemRemove = ''
+                            }).catch(error => {
+                                console.error(error)
+                            })
+                    } else {
+                        swal("Your imaginary file is safe!");
                     }
-                })
-                self.selected.itemRemove = ''
-                 window.alert('item has been deleted')
-             }).catch(error=>{
-                 console.error(error)
-             })
+                });
         },
         inputNewUserAdmin(){
             let self = this
@@ -243,30 +259,47 @@ new Vue({
             .then(function(response){
                 self.newUser = {}
                 self.datausers.push(response.data.data)
-                window.alert('user has been created')
+                swal("Good job!", "DB was Updated!", "success");
             })
             .catch(err=>{console.log(err)})
         },
         removeUserAdmin(){
             console.log('masuk sini')
             let self =  this
-            axios.delete(`http://localhost:3000/users/${self.selected.userRemove}`)
-             .then(response=>{
-                 self.datausers.filter((el,idx)=>{
-                     if(el._id == self.selected.userRemove){
-                         self.datausers.splice(idx,1)
-                     }
-                 })
-                 self.selected.userRemove = ''
-                 window.alert('user has been deleted')
-             })
-             .catch(err=>{console.log(err)})
+            swal({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this imaginary file!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Your imaginary file has been deleted!", {
+                            icon: "success",
+                        })
+                        axios.delete(`http://localhost:3000/users/${self.selected.userRemove}`)
+                            .then(response => {
+                                self.datausers.filter((el, idx) => {
+                                    if (el._id == self.selected.userRemove) {
+                                        self.datausers.splice(idx, 1)
+                                    }
+                                })
+                                self.selected.userRemove = ''
+                            })
+                            .catch(err => { console.log(err) })
+                    } else {
+                        swal("Your imaginary file is safe!");
+                    }
+                });
+
+    
         }, changeRoleAdmin(){
             let self = this
             axios.put(`http://localhost:3000/users/${self.selected.userRole}`,{
                 role:self.userRole
             }).then(function(response){
-                window.alert('role has been changed to '+ self.userRole)
+                swal("Good job!", "User role has changed to !"+self.userRole, "success");
                 self.userRole = ""
                 self.selected.userRole=''
             })
@@ -278,7 +311,7 @@ new Vue({
             }).then(response=>{
                 self.itemQuantity = ''
                 self.selected.itemQuantity=''
-                window.alert('item quantity has been updated')
+                swal("Good job!", "DB was Updated!", "success");
             })
             .catch(err=>{
                 console.log(err)
