@@ -7,7 +7,8 @@ const createUsers = (req,res)=>{
     let user = new Users({
         name:req.body.name,
         email:req.body.email,
-        password:req.body.password
+        password:req.body.password,
+        role:req.body.role
     })
     bcrypt.hash(user.password, saltRounds, function (err, hash) {
         user.password = hash

@@ -1,5 +1,6 @@
 var User = require('../models/users')
 var bcrypt = require('bcrypt');
+var Item  = require('../models/item')
 var jwt = require('jsonwebtoken');
 const saltRounds = 10;
 
@@ -17,8 +18,19 @@ const signIn = (req,res)=>{
                         email:doc.email,
                         role : doc.role
                     }
-                    let token = jwt.sign(payload,'haha')
-                    res.status(200).send({message:'welcome,heres your token',token:token,data:doc})
+                 Item.find()
+                  .then(docs=>{
+                      if(doc.role == 'admin'){
+                        User.find().then(users=>{
+                            let token = jwt.sign(payload, 'haha')
+                            res.status(200).send({ message: 'welcome,heres your token', token: token, data: doc, dataItems: docs,dataUsers:users })
+                        })
+                      }else{
+                          let token = jwt.sign(payload, 'haha')
+                          res.status(200).send({ message: 'welcome,heres your token', token: token, data: doc, dataItems: docs })
+                      }
+                  })   
+                    
                 
             });
         }else{
