@@ -55,7 +55,7 @@
                                      
                                     </div><a v-if="signIn" @click="modalPopUp" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> {{features.signIn}}</a>
                                 
-                                        <a  id="logout" @click="login" v-if="showMenu" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>{{features.logout}}</a>
+                                        <a  id="logout" @click="logout" v-if="logoutbtn" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>{{features.logout}}</a>
                                       </div>
                         </div>
                 </nav>
@@ -117,7 +117,7 @@
                             <p class="title is-4">item name: {{item.name}}</p>
                             <p class="title is-4">item price :{{item.price}}</p>
                             <p class="title is-4">item quantity: {{item.quantity}}</p>
-                            <a class="button is-warning" @click=" addItemToChart(item)" >add item to chart</a>
+                            <a class="button is-warning" @click=" addItemToChart(item,idx)" >add item to chart</a>
                           </div>
                       </div>
                     </div>
@@ -129,6 +129,152 @@
 
     </section>
   </transition>
+
+  <section class="hero-body" v-if="showMenuAdmin">
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical is-8">
+        <div class="tile">
+          <div class="tile is-parent is-vertical">
+            <article class="tile is-child notification is-primary">
+              <div class="field">
+                <p class="title">Input New Item</p>
+                <label class="label">Item's Name</label>
+                <div class="control">
+                  <input  v-model="newItem.name" class="input" type="text" placeholder="e.g Alex Smith">
+                </div>
+              </div>
+              
+              <div class="field">
+                <label class="label">quantity</label>
+                <div class="control">
+                  <input  v-model="newItem.quantity" class="input" min="1" type="number" placeholder="how much?">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Category</label>
+                <div class="control">
+                  <input v-model="newItem.category" class="input" type="text" placeholder="category is?">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Price</label>
+                <div class="control">
+                  <input v-model="newItem.price" class="input" min="1000" type="number" placeholder="price is?">
+                </div>
+              </div>
+              <a @click="inputNewItemAdmin()" class="button is-warning is-focused">Input New Item</a>
+            </article>
+
+
+            <article class="tile is-child notification is-warning listing">
+             <p class="title"> remove Item</p>
+              <div class="select" >
+                <select v-model="selected.itemRemove">
+                  <option disabled value="">Please select one</option>
+                  <option v-for="(item,idx) in dataitems"  :value="item._id">{{item.name}}
+                  </option>
+                </select>
+              </div>
+        
+              <a @click="removeItemAdmin()" class="button is-danger is-focused">Remove Item</a>
+            </article>
+          </div>
+
+
+          <div class="tile is-parent">
+            <article class="tile is-child notification is-info">
+              <p class="title">Create User</p>
+
+              <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                  <input v-model="newUser.name" class="input" type="text" placeholder="e.g. dorman">
+                </div>
+              </div>
+              
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                  <input v-model="newUser.email" class="input" type="email" placeholder="e.g. alexsmith@gmail.com">
+                </div>
+              </div>
+              
+              <div class="field">
+                <label class="label">Pasword</label>
+                <div class="control">
+                  <input v-model="newUser.password" class="input" type="password" placeholder="the password">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">role</label>
+                <div class="control">
+                  <input v-model="newUser.role" class="input" type="text" placeholder="the role is..">
+                </div>
+              </div>
+              <a @click="inputNewUserAdmin" class="button is-warning is-focused">Input New User</a>
+
+
+              <p class="title">Remove User</p>
+              <div class="select">
+                <select v-model="selected.userRemove">
+                    <option disabled value="">Please select one</option>
+                  <option v-for="user in datausers" :value="user._id">{{user.name}}</option>
+                </select>
+              </div>
+              
+              <a @click="removeUserAdmin" class="button is-danger is-focused">Remove User</a>
+            </article>
+          </div>
+        </div>
+
+        
+        <div class="tile is-parent">
+          <article class="tile is-child notification is-danger">
+            <p class="title">Change User Role</p>
+            <div class="select">
+              <select v-model="selected.userRole">
+                <option disabled value="">Select dropdown user id</option>
+                <option v-for="user in datausers" :value="user._id">{{user.name}}</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Role</label>
+              <div class="control">
+                <input v-model="userRole" class="input" type="text" placeholder="admin/customer?">
+              </div>
+            </div>
+            <a  @click="changeRoleAdmin" class="button is-warning is-focused">Change Role User</a>
+          </article>
+        </div>
+
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-success">
+          <div class="content">
+            <p class="title">Add new quantity Item</p>
+            <div class="select">
+              <select v-model="selected.itemQuantity">
+                <option disabled value="">Select dropdown user id</option>
+                <option v-for="item in dataitems" :value="item._id">{{item.name}}</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Item's Quantity</label>
+              <div class="control">
+                <input v-model="itemQuantity" class="input" min="1" type="number" placeholder="how much?">
+              </div>
+            </div>
+            <a @click="changeQuantityAdmin" class="button is-danger is-focused">add new quantity</a>
+          </div>
+
+
+        </article>
+      </div>
+    </div>
+  </section>
     <div id='signinmodal' :class="modal">
         <div class="modal-background"></div>
         <div class="modal-content">
