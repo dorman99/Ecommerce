@@ -3,6 +3,7 @@ new Vue({
     data: {
         
         showMenu: false,
+        tempItems:[],
         password:'',
         loggedin :{
             admin:false,
@@ -23,6 +24,7 @@ new Vue({
         modalChart:'modal',
         logoutbtn:false,
         userRole:'',
+        showitemsmenu:false,
         chartData : [],
         datausers  : [],
         newUser   :{
@@ -49,15 +51,11 @@ new Vue({
         },
         dataitems:[],
         categories:[
-            'sport',
-            'education',
-            'IT'
+            
         ],
         transactions:[
             'History buy',
-            'checkout items'
-        ],
-        makan:'bahlul ente',
+        ]
     },
     methods:{
         login () {
@@ -69,8 +67,19 @@ new Vue({
                 password:this.password
             })
             .then(function(response){
-                self.dataitems = response.data.dataItems
+                let x = null
+                self.tempItems = response.data.dataItems
                 self.datausers = response.data.dataUsers
+                self.tempItems.forEach(el=>{
+                    x = self.categories.find(function(fel){
+                        return fel == el.category
+                        console.log(x)
+                    })
+                    console.log(x,'ini x')
+                    if(x == undefined){
+                        self.categories.push(el.category)
+                    }
+                })
                 console.log(response,'ini response')
                 if (response.data.length !== 0) {
                  if(response.data.data.role == 'customer'){
@@ -137,7 +146,14 @@ new Vue({
             this.modalChart+=' is-active'
         },
         showItems(){
-           this.items = !this.items
+            if(this.items){
+             this.features.showitems = 'show item'       
+            this.items = !this.items
+            }else{
+                this.features.showitems = 'hide item'
+                this.items = !this.items
+            }
+           
         },
         addItemToChart(item){
             console.log('masuk ke sini')
@@ -168,11 +184,11 @@ new Vue({
             }
            
         },
-        removeItem(item){
+        removeItem(item){ 
            
-            this.dataitems.filter((el,idx)=>{
+            this.tempItems.filter((el,idx)=>{
                 if(el._id == item._id){
-                    return this.dataitems[idx].quantity+=item.quantity
+                    return this.tempItems[idx].quantity+=item.quantity
                 }
             })
            this.chartData.filter((row,index)=>{
@@ -267,6 +283,15 @@ new Vue({
             .catch(err=>{
                 console.log(err)
             })
+        },
+        selectCategory(cate){
+            this.dataitems = []
+            this.tempItems.forEach(el=>{
+                if(el.category == cate){
+                    this.dataitems.push(el)
+                }
+            })
+            this.showitemsmenu = !this.showitemsmenu
         }
 
     },
