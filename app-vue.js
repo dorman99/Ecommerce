@@ -67,12 +67,12 @@ new Vue({
                 password:this.password
             })
             .then(function(response){
-                console.log(response,'ini ap')
-                if(response.data !== '' ){
+                console.log(response.data.length,'ini ap')
+                if(response.data.length !== 0 ){
                     self.modal = "modal"
                     self.showMenu = !self.showMenu
                     self.signIn = !self.signIn;
-                }else{
+                }else if(response.data.length == 0){
                     self.email='',
                     self.password=''
                     window.alert('password/email salah')
@@ -104,31 +104,8 @@ new Vue({
            this.items = !this.items
         },
         addItemToChart(item,idx){
-            let count = 0
-            if(this.dataitems[idx].quantity !== 0){
-                this.chartData.map(el=>{
-                    if(el.id == item.id){
-                        count = 1
-                    }
-                })
-                    console.log(count,'---')
-                    if(count == 0){
-                        console.log(item)
-                        let objAddTochart ={
-                            ...item,
-                            quantity:1,
-                            subtotal:item.price
-                        }
-                        this.dataitems[idx].quantity-=1
-                        // console.log(item,'ini item')
-                        this.chartData.push(objAddTochart)
-                    }else{
-                        this.chartData[idx].quantity++
-                        this.chartData[idx].subtotal+=item.price
-                        this.dataitems[idx].quantity--
-                    }
-            }
-           
+            // logicnya belum
+            
         },
         removeItem(item,idx){
             console.log(item.quantity)
