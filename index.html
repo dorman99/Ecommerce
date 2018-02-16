@@ -20,10 +20,6 @@
 <body>
 
   <div id="app">
-
-    <h1>
-      {{makan}}
-    </h1>
     <section class="hero is-success" >
 
                 <section class="hero">
@@ -48,7 +44,6 @@
                                 <div class="navbar-start">
                                         <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i>{{features.home}}</a>
                                         <a v-if="showMenu" @click="showMychart()" id="mychart" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
-                                        <a  v-if="showMenu" class="navbar-item "><i class="fas fa-address-card"></i>{{features.profile}}</a>
                                       </div>
                                 <div class="navbar-end">
                                     <div class="control container-flex">
@@ -78,14 +73,14 @@
                           <div hidden class="categories">
                             <li>
                                 <ul>
-                                    <li v-for="cate in categories"><a>{{cate}}</a></li>
+                                    <li  v-for="cate in categories" @click="selectCategory(cate)"><a>{{cate}}</a></li>
                                   </ul>
                             </li>
 
                           </div>
                       </div>
                       <div >
-                          <li><a id="showItems"  @click="showItems()">{{features.showitems}}</a></li>
+                          <li><a v-if="true" id="showItems"  @click="showItems()">{{features.showitems}}</a></li>
                       </div>
 
                     </ul>
