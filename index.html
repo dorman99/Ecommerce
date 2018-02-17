@@ -273,7 +273,7 @@
   </section>
     <div id='signinmodal' :class="modal">
         <div class="modal-background"></div>
-        <div class="modal-content">
+        <div v-if="loginform" class="modal-content">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
                   <input class="input" v-model="email" type="email" placeholder="Email">
@@ -298,13 +298,54 @@
                   <button @click="login" class="button is-success">
                     Login
                   </button>
-                   <p> dont have any acc? </p>
-                  <button @click="login" class="button is-success">
-                      sign in
+                  <p > <Strong style="color:green">dont have any acc?</Strong>  </p>
+                  <button @click="signinform" class="button is-success">
+                       sign-up
                     </button>
                 </p>
               </div>
         </div>
+        <!-- ini content buat ssign form -->
+        <div v-else="loginform" class="modal-content">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" v-model="signupForm.name" type="text" placeholder="Full Name">
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" v-model="signupForm.email" type="email" placeholder="Email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+                
+            </p>
+          </div>
+
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" v-model="signupForm.password" type="password" placeholder="Password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+
+          
+          
+          <div class="field">
+            <p class="control">
+              <button @click="signup" class="button is-success">
+                sign-up
+              </button>
+            </p>
+          </div>
+        </div>
+
+
         <button class="modal-close is-large" @click="closeModalSignIn" aria-label="close"></button>
       </div>
 

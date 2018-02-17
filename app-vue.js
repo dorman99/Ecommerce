@@ -9,6 +9,11 @@ new Vue({
             admin:false,
             customer:false
         },
+        signupForm:{
+            name:'',
+            email:'',
+            password:''
+        },
         selected:{
             itemRemove:'',
             userRemove:'',
@@ -24,6 +29,7 @@ new Vue({
         modalChart:'modal',
         logoutbtn:false,
         userRole:'',
+        loginform:true,
         showitemsmenu:false,
         chartData : [],
         datausers  : [],
@@ -141,6 +147,7 @@ new Vue({
         },
         modalPopUp () {
             this.modal+=' is-active'
+            this.loginform = true
         },
         showMychart(){
            
@@ -325,6 +332,39 @@ new Vue({
                 }
             })
             this.showitemsmenu = !this.showitemsmenu
+        },
+        signinform(){
+            this.loginform = !this.loginform
+        },
+        signup(){
+            console.log('masuk sign up')
+            let self =  this
+            axios.post('http://localhost:3000/users',{
+                name: self.signupForm.name,
+                email: self.signupForm.email,
+                password: self.signupForm.password
+            })
+            .then(function(response){
+                console.log(response)
+                let a = response.data.message.search('email: Error')
+                console.log(a,'ini a')
+                if (a !== -1){
+                    swal("signup failed!", "email has been used!", "error");
+                    self.signupForm.name=''
+                    self.signupForm.email=''
+                    self.signupForm.password=''
+                }else{
+                    self.loginform = true
+                    self.signupForm.name = ''
+                    self.signupForm.email = ''
+                    self.signupForm.password = ''
+                    swal("Good job!", "Sign-up Done !", "success");
+                }
+                
+            })
+            .catch(err=>{
+                window.alert(err)
+            })
         }
 
     },
