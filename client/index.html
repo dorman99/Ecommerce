@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="style.css">
@@ -14,15 +15,12 @@
         crossorigin="anonymous"></script>
     <script src="javascirpts.js"></script>
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Ecommerce layout</title>
 </head>
 <body>
 
   <div id="app">
-
-    <h1>
-      {{makan}}
-    </h1>
     <section class="hero is-success" >
 
                 <section class="hero">
@@ -47,14 +45,13 @@
                                 <div class="navbar-start">
                                         <a href="/" class="mdi mdi-home navbar-item"><i class="fas fa-home"></i>{{features.home}}</a>
                                         <a v-if="showMenu" @click="showMychart()" id="mychart" class="mdi mdi-home navbar-item"> <i class="fas fa-shopping-cart"></i> show my chart</a>
-                                        <a  v-if="showMenu" class="navbar-item "><i class="fas fa-address-card"></i>{{features.profile}}</a>
                                       </div>
                                 <div class="navbar-end">
                                     <div class="control container-flex">
                                      
                                     </div><a v-if="signIn" @click="modalPopUp" id="signin"  class="navbar-item " ><i class="fas fa-sign-in-alt"></i> {{features.signIn}}</a>
                                 
-                                        <a  id="logout" @click="login" v-if="showMenu" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>{{features.logout}}</a>
+                                        <a  id="logout" @click="logout" v-if="logoutbtn" class="navbar-item " ><i class="fas fa-sign-out-alt" ></i>{{features.logout}}</a>
                                       </div>
                         </div>
                 </nav>
@@ -77,14 +74,14 @@
                           <div hidden class="categories">
                             <li>
                                 <ul>
-                                    <li v-for="cate in categories"><a>{{cate}}</a></li>
+                                    <li  v-for="cate in categories" @click="selectCategory(cate)"><a>{{cate}}</a></li>
                                   </ul>
                             </li>
 
                           </div>
                       </div>
                       <div >
-                          <li><a id="showItems"  @click="showItems()">{{features.showitems}}</a></li>
+                          <li><a v-if="true" id="showItems"  @click="showItems()">{{features.showitems}}</a></li>
                       </div>
 
                     </ul>
@@ -105,7 +102,7 @@
                   <div class="card">
                       <div class="card-image">
                         <figure class="image is-4by3">
-                          <img :src="item.image" alt="Placeholder image">
+                          <img :src="item.img" alt="Placeholder image">
                         </figure>
                       </div>
                       <div class="card-content">
@@ -128,12 +125,165 @@
 
     </section>
   </transition>
+
+  <section class="hero-body" v-if="showMenuAdmin">
+    <div class="tile is-ancestor">
+      <div class="tile is-vertical is-8">
+        <div class="tile">
+          <div class="tile is-parent is-vertical">
+            <article class="tile is-child notification is-primary">
+              <div class="field">
+                <p class="title">Input New Item</p>
+                <label class="label">Item's Name</label>
+                <div class="control">
+                  <input  v-model="newItem.name" class="input" type="text" placeholder="e.g Alex Smith">
+                </div>
+              </div>
+
+            <div class="field">
+              <label class="label">Item's pic</label>
+              <div class="control">
+                <input @change="filehandle" type="file" >
+              </div>
+            </div>
+              
+              <div class="field">
+                <label class="label">quantity</label>
+                <div class="control">
+                  <input  v-model="newItem.quantity" class="input" min="1" type="number" placeholder="how much?">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Category</label>
+                <div class="control">
+                  <input v-model="newItem.category" class="input" type="text" placeholder="category is?">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Price</label>
+                <div class="control">
+                  <input v-model="newItem.price" class="input" min="1000" type="number" placeholder="price is?">
+                </div>
+              </div>
+              <a @click="inputNewItemAdmin()" class="button is-warning is-focused">Input New Item</a>
+            </article>
+
+
+            <article class="tile is-child notification is-warning listing">
+             <p class="title"> remove Item</p>
+              <div class="select" >
+                <select v-model="selected.itemRemove">
+                  <option disabled value="">Please select one</option>
+                  <option v-for="(item,idx) in dataitems"  :value="item._id">{{item.name}}
+                  </option>
+                </select>
+              </div>
+        
+              <a @click="removeItemAdmin()" class="button is-danger is-focused">Remove Item</a>
+            </article>
+          </div>
+
+
+          <div class="tile is-parent">
+            <article class="tile is-child notification is-info">
+              <p class="title">Create User</p>
+
+              <div class="field">
+                <label class="label">Name</label>
+                <div class="control">
+                  <input v-model="newUser.name" class="input" type="text" placeholder="e.g. dorman">
+                </div>
+              </div>
+              
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                  <input v-model="newUser.email" class="input" type="email" placeholder="e.g. alexsmith@gmail.com">
+                </div>
+              </div>
+              
+              <div class="field">
+                <label class="label">Pasword</label>
+                <div class="control">
+                  <input v-model="newUser.password" class="input" type="password" placeholder="the password">
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">role</label>
+                <div class="control">
+                  <input v-model="newUser.role" class="input" type="text" placeholder="the role is..">
+                </div>
+              </div>
+              <a @click="inputNewUserAdmin" class="button is-warning is-focused">Input New User</a>
+
+
+              <p class="title">Remove User</p>
+              <div class="select">
+                <select v-model="selected.userRemove">
+                    <option disabled value="">Please select one</option>
+                  <option v-for="user in datausers" :value="user._id">{{user.name}}</option>
+                </select>
+              </div>
+              
+              <a @click="removeUserAdmin" class="button is-danger is-focused">Remove User</a>
+            </article>
+          </div>
+        </div>
+
+        
+        <div class="tile is-parent">
+          <article class="tile is-child notification is-danger">
+            <p class="title">Change User Role</p>
+            <div class="select">
+              <select v-model="selected.userRole">
+                <option disabled value="">Select dropdown user id</option>
+                <option v-for="user in datausers" :value="user._id">{{user.name}}</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Role</label>
+              <div class="control">
+                <input v-model="userRole" class="input" type="text" placeholder="admin/customer?">
+              </div>
+            </div>
+            <a  @click="changeRoleAdmin" class="button is-warning is-focused">Change Role User</a>
+          </article>
+        </div>
+
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-success">
+          <div class="content">
+            <p class="title">Add new quantity Item</p>
+            <div class="select">
+              <select v-model="selected.itemQuantity">
+                <option disabled value="">Select dropdown user id</option>
+                <option v-for="item in dataitems" :value="item._id">{{item.name}}</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Item's Quantity</label>
+              <div class="control">
+                <input v-model="itemQuantity" class="input" min="1" type="number" placeholder="how much?">
+              </div>
+            </div>
+            <a @click="changeQuantityAdmin" class="button is-danger is-focused">add new quantity</a>
+          </div>
+
+
+        </article>
+      </div>
+    </div>
+  </section>
     <div id='signinmodal' :class="modal">
         <div class="modal-background"></div>
-        <div class="modal-content">
+        <div v-if="loginform" class="modal-content">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
-                  <input class="input" type="email" placeholder="Email">
+                  <input class="input" v-model="email" type="email" placeholder="Email">
                   <span class="icon is-small is-left">
                     <i class="fas fa-envelope"></i>
                   </span>
@@ -144,7 +294,7 @@
               </div>
               <div class="field">
                 <p class="control has-icons-left">
-                  <input class="input" type="password" placeholder="Password">
+                  <input class="input"  v-model="password" type="password" placeholder="Password">
                   <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
                   </span>
@@ -155,13 +305,54 @@
                   <button @click="login" class="button is-success">
                     Login
                   </button>
-                   <p> dont have any acc? </p>
-                  <button @click="login" class="button is-success">
-                      sign in
+                  <p > <Strong style="color:green">dont have any acc?</Strong>  </p>
+                  <button @click="signinform" class="button is-success">
+                       sign-up
                     </button>
                 </p>
               </div>
         </div>
+        <!-- ini content buat ssign form -->
+        <div v-else="loginform" class="modal-content">
+          <div class="field">
+            <p class="control has-icons-left has-icons-right">
+              <input class="input" v-model="signupForm.name" type="text" placeholder="Full Name">
+              <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+              </span>
+            </p>
+          </div>
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" v-model="signupForm.email" type="email" placeholder="Email">
+              <span class="icon is-small is-left">
+                <i class="fas fa-envelope"></i>
+              </span>
+                
+            </p>
+          </div>
+
+          <div class="field">
+            <p class="control has-icons-left">
+              <input class="input" v-model="signupForm.password" type="password" placeholder="Password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+
+          
+          
+          <div class="field">
+            <p class="control">
+              <button @click="signup" class="button is-success">
+                sign-up
+              </button>
+            </p>
+          </div>
+        </div>
+
+
         <button class="modal-close is-large" @click="closeModalSignIn" aria-label="close"></button>
       </div>
 
@@ -174,7 +365,7 @@
                       <div class="card ">
                           <div class="card-image">
                             <figure class="image is-4by3">
-                              <img :src="item.image" alt="Placeholder image">
+                              <img :src="item.img" alt="Placeholder image">
                             </figure>
                           </div>
                           <div class="card-content">
@@ -187,7 +378,7 @@
                                 <p>harga item:{{item.quantity}} </p>
                                   <div class="field">
                                       <p class="control">
-                                        <button  class="button is-danger">
+                                        <button @click='removeItem(item)' class="button is-danger">
                                           cancel buy
                                         </button>
                                 
@@ -203,11 +394,11 @@
                   
                   <div class="card-content">
                     <div class="content">
-                      total price : {{total}}
+                      total price : {{totalPrice}}
                     </div>
                   </div>
                   <footer class="card-footer">
-                    <a href="#" class="card-footer-item " >Checkout</a>
+                    <a @click="buy" class="card-footer-item " >Checkout</a>
                   </footer>
                 </div>
              
