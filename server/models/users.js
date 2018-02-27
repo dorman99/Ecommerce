@@ -6,7 +6,7 @@ var usersSchema = new Schema({
     name    :String,
     email   :{type:String,unique:true},
     password:String,
-    role    : {type: String, default:'customer'}
+    role    : {type: String, default:'admin'}
 });
 
 usersSchema.plugin(uniqueValidator);
